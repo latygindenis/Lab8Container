@@ -69,9 +69,12 @@ list<Books>::iterator find_booklist (list <Books> &a, int num_page = -1, int amo
     cout<<"Nothing found in list<Books>"<<endl;
 }
 
-typedef map <string, long, less <string> > map_s1;
+typedef multimap <char *, long, less <string> > map_s1; // Для удобства чтения
+typedef multimap <int , Books, less <Books> > map_book;
 
 int main() {
+    srand(static_cast<unsigned int>(time(NULL)));
+    unsigned int timer_begin=0;
 
 //    pair<int, double> pi(10, 12.3),  p2(20, 12.3);
 //
@@ -81,11 +84,39 @@ int main() {
 //    if (pi == p2) cout << "pi == p2\n";
 //    pi.second -= 1;
 //    if (p2 > pi) cout << "p2 > pl\n";
+    map_s1 m1;
+    map_s1::iterator iter;
+    char *str;
+    str = new char[4];
+    str[0]='z'; str[1]='x'; str[2]='y'; str[3]='z';str[4]='f'; str[5] = '\0';
+//    m1.insert(make_pair("aaa", 100));
+//    m1.insert(make_pair("aaa", 172));
+//    m1.insert(make_pair("aaa", 10));
 
+    timer_begin = static_cast<unsigned int>(clock());
+    for (int i=0; i<500000; i++)
+    {
+        m1.insert(make_pair(randomString(5), 100000+rand()%999999));
+    }
+    cout<<"Multimap <char*, long> add (sort) element to end time: "<<clock()-timer_begin<< "ms"<<endl;
 
+    timer_begin = static_cast<unsigned int>(clock());
+    m1.insert(make_pair(str, 456975));
+    m1.insert(make_pair(str, 456977));
+    m1.insert(make_pair(str, 476975));
+    cout<<"Multimap <char*, long> insert elements: "<<clock()-timer_begin<< "ms"<<endl;
 
-    srand(static_cast<unsigned int>(time(NULL)));
-    unsigned int timer_begin=0;
+    timer_begin = static_cast<unsigned int>(clock());
+    for (map_s1::iterator itw = m1.equal_range(str).first;  itw != m1.equal_range(str).second; itw++)
+    {
+        cout<<itw->first<<" "<<itw->second<<endl;
+    }
+    cout<<"Multimap <char*, long> find by key element: "<<clock()-timer_begin<< "ms"<<endl;
+
+    timer_begin = static_cast<unsigned int>(clock());
+    cout<<"Deleted: "<<m1.erase(str)<<" elements"<<endl;
+    cout<<"Multimap <char*, long> delete element: "<<clock()-timer_begin<< "ms"<<endl;
+
 
     list<int> list0, list1, list2;
     list<Books> myListBook0, myListBook1, myListBook2;
@@ -183,8 +214,8 @@ int main() {
     cout<<"Time list0 find value: "<<clock()-timer_begin<< "ms"<<endl;
 
     timer_begin = static_cast<unsigned int>(clock());
-    find_booklist(myListBook0, 100, 785);
-    cout<<"Time myBookList0 find value: "<<clock()-timer_begin<< "ms"<<endl
+    find_booklist(myListBook0, 100);
+    cout<<"Time myBookList0 find value: "<<clock()-timer_begin<< "ms"<<endl;
 
 
 
