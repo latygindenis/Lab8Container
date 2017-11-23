@@ -21,7 +21,7 @@ char * randomString (int sybols = 3)
     str = new char [sybols+1];
     for (int i = 0; i < sybols; i++)
     {
-        str [i]  = static_cast<char>(100 + rand() % 10);
+        str [i]  = static_cast<char>(97 + rand() % 10);
     }
     str[sybols] = '\0';
     return str;
@@ -83,19 +83,30 @@ int main() {
     str[0]='z'; str[1]='x'; str[2]='y'; str[3]='z';str[4]='f'; str[5] = '\0';
     map_book m2;
     map_book::iterator iter1;
+    Books bk("KOLLY", 77, 1278);
 
-    m2.insert(make_pair(Books("Joker", 77, 88), rand()%100));
-    m2.insert(make_pair(Books("Joker", 77, 99), rand()%100));
-    m2.insert(make_pair(Books("Joker", 77, 10), rand()%100));
     iter1 = m2.begin();
-    Books myBook("sss", 125, 57);
-
-    for (map_book::iterator itw = m2.begin();  itw != m2.end(); itw++)
+    timer_begin = static_cast<unsigned int>(clock());
+    for (int i=0; i<500000; i++)
     {
-       itw->first.print();
-        cout<<" "<<itw->second<<endl;
+       m2.insert(make_pair(Books(randomString(5), rand()%100, rand()%10000), rand()%100));
     }
+    cout<<"Multimap <Books, int> add (sort) element to end time: "<<clock()-timer_begin<< "ms"<<endl;
 
+    timer_begin = static_cast<unsigned int>(clock());
+    m2.insert(make_pair(bk, rand()%100));
+    m2.insert(make_pair(bk, rand()%100));
+    m2.insert(make_pair(bk, rand()%100));
+    cout<<"Multimap <Books, int> insert elements: "<<clock()-timer_begin<< "ms"<<endl;
+
+    timer_begin = static_cast<unsigned int>(clock());
+    m2.equal_range(bk);
+    cout<<"Multimap <Books, int> find by key elements: "<<clock()-timer_begin<< "ms"<<endl;
+
+    timer_begin = static_cast<unsigned int>(clock());
+    cout<<"Deleted "<<m2.erase(bk)<<" elements"<<endl;
+
+    cout<<"Multimap <Books, int> delete elements: "<<clock()-timer_begin<< "ms"<<endl;
 
     timer_begin = static_cast<unsigned int>(clock());
     for (int i=0; i<500000; i++)
@@ -111,10 +122,7 @@ int main() {
     cout<<"Multimap <char*, long> insert elements: "<<clock()-timer_begin<< "ms"<<endl;
 
     timer_begin = static_cast<unsigned int>(clock());
-    for (map_s1::iterator itw = m1.equal_range(str).first;  itw != m1.equal_range(str).second; itw++)
-    {
-        cout<<itw->first<<" "<<itw->second<<endl;
-    }
+    m1.equal_range(str);
     cout<<"Multimap <char*, long> find by key element: "<<clock()-timer_begin<< "ms"<<endl;
 
     timer_begin = static_cast<unsigned int>(clock());
