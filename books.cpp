@@ -105,9 +105,9 @@ Books::operator float() const
     return amount;
 }
 
-void Books::print()
+void Books::print() const
 {
-    cout<<name<<" "<<num_page<<" "<<amount<<endl;
+    cout<<name<<" "<<num_page<<" "<<amount;
 }
 void Books::setdata(char *name_book, int num_page_book, int amount_book)
 {
@@ -140,11 +140,11 @@ Books::~Books()
     delete[] name;
 }
 
-ostream & operator << (ostream &os, Books &book) {
-    os << book.name<<" "<<book.num_page<<" "<<book.amount;
-    return os;
-
-}
+//ostream & operator << (ostream &os, Books &book){
+//    os << book.getName()<<" "<<book.getNum_page()<<" "<<book.get_amount();
+//    return os;
+//
+//}
 istream& operator >> (istream& is, Books &book)
 {
     try
@@ -209,25 +209,29 @@ char *Books::getdefinition() const {
     return 0;
 }
 
-Books operator>(Books one, Books two) {
-    if (one.get_amount() > two.get_amount())
+bool Books::operator > (Books two) {
+    if (this->get_amount()> two.get_amount())
     {
-        return one;
+        return true;
     }
     else{
-        return two;
+        return false;
     }
 
 }
-Books operator < (Books one, Books two) {
-    if (one.get_amount() < two.get_amount())
+bool Books::operator < (Books two) {
+    if (this->get_amount() < two.get_amount() )
     {
-        return two;
+        return true;
     }
     else{
-        return one;
+        return false;
     }
+}
 
+ostream &operator<<(ostream &os, Books &book) {
+    os << book.getName()<<" "<<book.getNum_page()<<" "<<book.get_amount();
+    return os;
 }
 
 AboutBook::AboutBook() : Books(){
@@ -288,3 +292,8 @@ NumBook::NumBook(const NumBook &myNumBook):Books(myNumBook)
 char *NumBook::getdefinition() const {
     return 0;
 }
+//ostream &Books::operator<<( Books &book) const {
+//    ostream *os;
+//    *os << book.getName()<<" "<<book.getNum_page()<<" "<<book.get_amount();
+//    return *os;
+//}

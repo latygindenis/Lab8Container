@@ -29,9 +29,10 @@ public:
     Books & operator ++ (); //префиксная форма
     operator float() const;
     friend Books operator - (Books one, Books two);
-    friend Books operator > (Books one, Books two);
-    friend Books operator < (Books one, Books two);
-    friend ostream& operator << (ostream& os, Books &book);
+    bool operator > (Books two);
+    bool operator < (Books two);
+
+    //friend ostream& operator << (ostream& os, Books &book);
     friend istream& operator >> (istream& is, Books &book);
 
     /*-------------------Методы-----------------------------*/
@@ -42,7 +43,7 @@ public:
     char *getName() const;
     void setdata(char *name_book, int num_page_book, int amount_book);
     void enterdata();
-    virtual void print();
+    virtual void print() const ;
     virtual char *getdefinition() const;
     virtual ~Books();
 };
@@ -72,6 +73,6 @@ public:
     void print();
     char *getdefinition() const;
 };
-
+ostream  &operator << (ostream& os, Books &book);
 
 #endif //LAB8CONTAINER_BOOKS_H

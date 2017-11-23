@@ -11,7 +11,6 @@
 #include <utility>
 #include <iostream>
 #include <list>
-#include <iterator>
 #include <ctime>
 #include "books.h"
 #include <map>
@@ -70,28 +69,33 @@ list<Books>::iterator find_booklist (list <Books> &a, int num_page = -1, int amo
 }
 
 typedef multimap <char *, long, less <string> > map_s1; // Для удобства чтения
-typedef multimap <int , Books, less <Books> > map_book;
+typedef multimap <Books, int, less <Books> > map_book;
 
 int main() {
     srand(static_cast<unsigned int>(time(NULL)));
     unsigned int timer_begin=0;
 
-//    pair<int, double> pi(10, 12.3),  p2(20, 12.3);
-//
-//    cout << "pi: " << pi.first << " " << pi.second << endl;
-//    cout << "p2: " << p2.first << " " << p2.second << endl;
-//    p2.first -= 10;
-//    if (pi == p2) cout << "pi == p2\n";
-//    pi.second -= 1;
-//    if (p2 > pi) cout << "p2 > pl\n";
     map_s1 m1;
     map_s1::iterator iter;
+
     char *str;
     str = new char[4];
     str[0]='z'; str[1]='x'; str[2]='y'; str[3]='z';str[4]='f'; str[5] = '\0';
-//    m1.insert(make_pair("aaa", 100));
-//    m1.insert(make_pair("aaa", 172));
-//    m1.insert(make_pair("aaa", 10));
+    map_book m2;
+    map_book::iterator iter1;
+
+    m2.insert(make_pair(Books("Joker", 77, 88), rand()%100));
+    m2.insert(make_pair(Books("Joker", 77, 99), rand()%100));
+    m2.insert(make_pair(Books("Joker", 77, 10), rand()%100));
+    iter1 = m2.begin();
+    Books myBook("sss", 125, 57);
+
+    for (map_book::iterator itw = m2.begin();  itw != m2.end(); itw++)
+    {
+       itw->first.print();
+        cout<<" "<<itw->second<<endl;
+    }
+
 
     timer_begin = static_cast<unsigned int>(clock());
     for (int i=0; i<500000; i++)
@@ -120,9 +124,6 @@ int main() {
 
     list<int> list0, list1, list2;
     list<Books> myListBook0, myListBook1, myListBook2;
-
-
-
 
 
     cout<<"list <int> add element  to end time: ";
@@ -185,29 +186,15 @@ int main() {
     cout<<"Delete <Books> from 250000: "<<clock()-timer_begin<< "ms"<<endl;
 
 
-//    list<int>::iterator it; //вывод элементов списка типа int
-//    it = list0.begin();
-//    copy(it, list0.end(), ostream_iterator<int>(cout, "\n"));
-
-
     timer_begin = static_cast<unsigned int>(clock());
     list0.sort();
     cout<<"list0 sort time: (500000) "<<clock()-timer_begin<< "ms"<<endl;
-
 
 
     for(int i = 0; i < 10; i++) {
         pv = new Books(randomString(10), rand()%1000, rand()%1000);
         myListBook1.push_back(*pv); // добавляем в список новые элементы
     }
-
-//    myListBook1.sort();
-//    new_it  = myListBook1.begin();
-//    while (new_it!=myListBook1.end())
-//    {
-//        new_it->print();
-//        new_it++;
-//    }
 
     timer_begin = static_cast<unsigned int>(clock());
     find_intlist(list0, 500);
@@ -216,12 +203,5 @@ int main() {
     timer_begin = static_cast<unsigned int>(clock());
     find_booklist(myListBook0, 100);
     cout<<"Time myBookList0 find value: "<<clock()-timer_begin<< "ms"<<endl;
-
-
-
-
-    //copy(list0.begin(), list0.end(), ostream_iterator<int>(cout," "));
-    //copy(mylist.begin(), mylist.end(), ostream_iterator<int>(cout," ")); // вывод на экран элементов списка
-
     return 0;
 }
